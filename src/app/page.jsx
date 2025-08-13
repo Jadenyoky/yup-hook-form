@@ -1,65 +1,35 @@
 "use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-const schema = yup.object({
-  name: yup.string().required("Name must be required"),
-  email: yup
-    .string()
-    .email("This email in not valid or wrong")
-    .required("Email must be required"),
-  password: yup
-    .string()
-    .min(6, "Password must be min. 6 characters")
-    .max(12, "Password must be max. 12 characters")
-    .required("Password must be required"),
-});
+import { useRouter } from "next/navigation";
+import React from "react";
 
 const Page = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const navigate = (data) => {
-    console.log("Navigating...", data);
-    reset();
-  };
+  const router = useRouter();
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(navigate)}>
-        <div>
-          <label>
-            name:
-            <input {...register("name")} />
-          </label>
-          <p>{errors.name?.message}</p>
+    <main
+      className="min-h-svh flex flex-col items-center justify-center gap-8 bg-[url(/bg1.jpg)] bg-no-repeat bg-cover bg-bottom
+    font-[DynaPuff] "
+    >
+      <div className="bg-[#ffffffbf] p-14 rounded-2xl shadow-xl flex flex-col items-center gap-12 max-w-[90%]">
+        <h1 className="text-2xl text-[#ff8d63]">
+          Welcome to the Multi-Step Form
+        </h1>
+        <div className="flex gap-8 ">
+          <button
+            className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition  "
+            onClick={() => router.push("/sign-up")}
+          >
+            Sign up
+          </button>
+          <button
+            className="cursor-pointer bg-[var(--blue)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition  "
+            onClick={() => router.push("/sign-in")}
+          >
+            Sign in
+          </button>
         </div>
-        <div>
-          <label>
-            email:
-            <input {...register("email")} />
-          </label>
-          <p>{errors.email?.message}</p>
-        </div>
-        <div>
-          <label>
-            password:
-            <input {...register("password")} />
-          </label>
-          <p>{errors.password?.message}</p>
-        </div>
-
-        <button type="submit">Sign up</button>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 };
 
