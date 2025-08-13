@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import MultiStepForms from "../components/multi-step-forms";
-
 const Page = () => {
   //
 

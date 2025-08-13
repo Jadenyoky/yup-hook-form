@@ -4,8 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
 import { stepSchemas } from "./schemas";
 import { Step1, Step2, Step3 } from "./steps";
+import store from "store2";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
 
 const MultiStepForms = () => {
+  const router = useRouter();
   const [currentStep, setcurrentStep] = useState(0);
 
   const methods = useForm({
@@ -17,19 +21,19 @@ const MultiStepForms = () => {
     {
       step: 1,
       title: "Personal info",
-      description: "Please provide your name, email, and phone number.",
+      description: "Please provide your name, age, and phone number.",
       component: <Step1 />,
     },
     {
       step: 2,
-      title: "Account Security",
+      title: "Account info",
       description: "Choose a password for your account.",
       component: <Step2 />,
     },
     {
       step: 3,
-      title: "Confirmation",
-      description: "Review your information and confirm your account.",
+      title: "Account Security",
+      description: "Choose a password for your account.",
       component: <Step3 />,
     },
   ];
@@ -44,7 +48,17 @@ const MultiStepForms = () => {
   };
 
   const complete = (data) => {
-    console.log("Form submitted:", data);
+    const users = store.get("users") || [];
+
+    users.push(data);
+
+    const finalUsers = _.uniqBy(users, "username");
+
+    store.set("users", finalUsers);
+
+    console.log("Form submitted:", finalUsers);
+
+    router.push("/profile");
   };
 
   return (

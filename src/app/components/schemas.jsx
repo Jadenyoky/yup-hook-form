@@ -1,24 +1,7 @@
 import * as yup from "yup";
+import store from "store2";
 
-const users = [
-  {
-    name: "Ahmed",
-    age: "26",
-    phone: "01032440162",
-    username: "ahmed047",
-    email: "Jaden_yoky2@yahoo.com",
-    password: "1234567",
-    confirmPassword: "1234567",
-  },
-  {
-    name: "Ahmed224",
-    age: "24",
-    phone: "01032440162",
-    email: "Jaden_yoky@yahoo.com",
-    password: "1234567",
-    confirmPassword: "1234567",
-  },
-];
+const users = store.get("users") || [];
 
 export const stepSchemas = [
   yup.object({
@@ -65,7 +48,7 @@ export const stepSchemas = [
           return false;
         }
         return !users.some(
-          (user) => user.name.toLowerCase() === value.toLowerCase()
+          (user) => user.username.toLowerCase() === value.toLowerCase()
         );
       }),
 

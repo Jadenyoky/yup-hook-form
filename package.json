@@ -11,10 +11,12 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
     "gsap": "^3.13.0",
+    "lodash": "^4.17.21",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
+    "store2": "^2.14.4",
     "yup": "^1.7.0"
   },
   "devDependencies": {
