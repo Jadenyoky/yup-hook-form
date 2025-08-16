@@ -5,7 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { stepSchemas } from "./schemas";
 import { Step1, Step2, Step3 } from "./steps";
 import store from "store2";
-import _ from "lodash";
+import _, { head } from "lodash";
 import { useRouter } from "next/navigation";
 
 const MultiStepForms = () => {
@@ -20,27 +20,26 @@ const MultiStepForms = () => {
   const stepsInfo = [
     {
       step: 1,
-      title: "Personal info",
-      description: "Please provide your name, age, and phone number.",
+      title: "Your Info",
+      heading: "Getting Started",
+      description: "Type your name, age, and phone number to begin.",
       component: <Step1 />,
     },
     {
       step: 2,
-      title: "Account info",
-      description: "Choose a password for your account.",
+      title: "Account Setup",
+      heading: "Profile Details",
+      description: "Pick a unique username and your email.",
       component: <Step2 />,
     },
     {
       step: 3,
-      title: "Account Security",
-      description: "Choose a password for your account.",
+      title: "Secure Access",
+      heading: "Password Setup",
+      description: "Create a strong password and confirm it.",
       component: <Step3 />,
     },
   ];
-
-  const back = () => {
-    currentStep > 0 && setcurrentStep((prev) => prev - 1);
-  };
 
   const next = async () => {
     const isValid = await methods.trigger();
@@ -56,7 +55,14 @@ const MultiStepForms = () => {
 
     store.set("users", finalUsers);
 
-    console.log("Form submitted:", finalUsers);
+    const usersStored = store.get("users") || [];
+    const currentUser = _.filter(usersStored, {
+      username: data.username,
+      password: data.password,
+    });
+
+    store.set("currentUser", currentUser);
+    console.log(data, currentUser);
 
     router.push("/profile");
   };
@@ -103,7 +109,7 @@ const MultiStepForms = () => {
               <div className="p-8 flex flex-col gap-8 justify-between ">
                 <div className="flex flex-col gap-2">
                   <h1 className="font-bold text-2xl text-[var(--blue-dark)] ">
-                    {stepsInfo[currentStep]?.title}
+                    {stepsInfo[currentStep]?.heading}
                   </h1>
                   <p className="opacity-40">
                     {stepsInfo[currentStep]?.description}
@@ -117,16 +123,28 @@ const MultiStepForms = () => {
                 </div>
 
                 <div className="font-semibold flex justify-between ">
-                  <button
-                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition ${
-                      currentStep > 0 ? "" : "invisible"
-                    }`}
-                    onClick={() => {
-                      back();
-                    }}
-                  >
-                    Go back
-                  </button>
+                  {currentStep > 0 ? (
+                    <button
+                      type="button"
+                      className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
+                      onClick={() => {
+                        currentStep > 0 && setcurrentStep((prev) => prev - 1);
+                      }}
+                    >
+                      Go back
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
+                      onClick={() => {
+                        router.push("/sign-in");
+                      }}
+                    >
+                      Having an account ?
+                    </button>
+                  )}
+
                   {currentStep < stepsInfo.length - 1 ? (
                     <button
                       type="button"

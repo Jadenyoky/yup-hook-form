@@ -8,13 +8,13 @@ const Page = () => {
   return (
     <main
       className="min-h-svh flex flex-col items-center justify-center gap-8 bg-[url(/bg1.jpg)] bg-no-repeat bg-cover bg-bottom
-    font-[DynaPuff] "
+    font-[DynaPuff] text-center "
     >
-      <div className="bg-[#ffffffbf] p-14 rounded-2xl shadow-xl flex flex-col items-center gap-12 max-w-[90%]">
+      <div className="bg-[#ffffffbf] p-14 rounded-4xl md:rounded-xl shadow-xl flex flex-col items-center gap-12 max-w-[90%] ">
         <h1 className="text-2xl text-[#ff8d63]">
           Welcome to the Multi-Step Form
         </h1>
-        <div className="flex gap-8 ">
+        <div className="flex gap-8 text-nowrap">
           <button
             className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition  "
             onClick={() => router.push("/sign-up")}

@@ -118,6 +118,33 @@ export const Step2 = () => {
           </div>
         );
       })}
+
+      <div className="flex flex-col justify-between items-center flex-wrap gap-4">
+        <div className="w-full flex justify-between items-center">
+          <label className="text-[var(--blue)] font-[dynapuff]">
+            Gender
+            <span className="text-sm opacity-50 text-[red]"> *</span>
+          </label>
+          {errors.gender?.message && (
+            <p className="flex justify-center items-center bg-red-100 text-red-500 px-2 py-1 rounded-full text-xs">
+              {errors.gender?.message}
+            </p>
+          )}
+        </div>
+        <div className="flex gap-4 w-full">
+          <div className="flex gap-2 bg-[var(--background-main)] px-4 py-2 rounded-3xl text-[var(--blue)] border border-[gainsboro]">
+            <input type="radio" value="male" {...register("gender")} />
+            <p>Male</p>
+          </div>
+          <div className="flex gap-2 bg-[var(--background-main)] px-4 py-2 rounded-3xl text-[var(--blue)] border border-[gainsboro]">
+            <input type="radio" value="female" {...register("gender")} />
+            <p>Female</p>
+          </div>
+        </div>
+        {/* <p className=" bg-red-100 text-red-500 px-2 py-1 rounded-full text-xs w-fit">
+          {errors.gender?.message}
+        </p> */}
+      </div>
     </div>
   );
 };

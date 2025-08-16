@@ -19,7 +19,7 @@ export const stepSchemas = [
       .required("Age is required")
       .nullable()
       .when({
-        is: (value) => value?.length > 0, // لو فيه أي حاجة مكتوبة
+        is: (value) => value?.length > 0,
         then: (schema) =>
           schema
             .min(1, "Age least ( 1 ) digits")
@@ -30,7 +30,7 @@ export const stepSchemas = [
       .notRequired()
       .nullable()
       .when({
-        is: (value) => value?.length > 0, // لو فيه أي حاجة مكتوبة
+        is: (value) => value?.length > 0,
         then: (schema) =>
           schema
             .min(11, "Phone number least ( 11 ) digits")
@@ -47,9 +47,7 @@ export const stepSchemas = [
         if (!value) {
           return false;
         }
-        return !users.some(
-          (user) => user.username.toLowerCase() === value.toLowerCase()
-        );
+        return !users.some((user) => user.username === value);
       }),
 
     email: yup
@@ -64,6 +62,7 @@ export const stepSchemas = [
           (user) => user.email.toLowerCase() === value.toLowerCase()
         );
       }),
+    gender: yup.string().required("Gender is required"),
   }),
   yup.object({
     password: yup
@@ -74,5 +73,37 @@ export const stepSchemas = [
       .string()
       .required("Confirm your password")
       .oneOf([yup.ref("password"), null], "Passwords must match"),
+  }),
+  yup.object({
+    username: yup
+      .string()
+      .required("Username is required")
+      .min(3, "At least ( 3 - 18 ) characters")
+      .max(18, "At least ( 3 - 18 ) characters")
+      .test("unique-username", "Username not found", (value) => {
+        if (!value) {
+          return false;
+        }
+        return users.some((user) => user.username === value);
+      }),
+
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(6, "Password least ( 6 ) characters")
+      .test("unique-password", "Password is wrong", function (value) {
+        if (!value) {
+          return false;
+        }
+        const { username } = this.parent;
+
+        if (!username) return false;
+
+        const foundUser = users.find((user) => user.username === username);
+
+        if (!foundUser) return true;
+
+        return foundUser.password === value;
+      }),
   }),
 ];
