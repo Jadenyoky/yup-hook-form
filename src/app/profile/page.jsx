@@ -30,40 +30,65 @@ const Page = () => {
       icon: "fi fi-rr-user",
       title: "name",
       content: user?.name,
-      color: "",
+      bgColor: "#006064",
+      titleColor: "#80deea",
+      contentColor: "#e0f7fa",
     },
 
     {
       icon: "fi fi-rr-hastag",
       title: "age",
       content: user?.age,
-      color: "",
+      bgColor: "#3a9a3a",
+      titleColor: "#b5e89f",
+      contentColor: "#e0f7b7",
     },
     {
       icon: "fi fi-rr-at",
       title: "username",
       content: `@${user?.username}`,
-      color: "",
+      bgColor: "#e88e24",
+      titleColor: "#fff176",
+      contentColor: "#fff9c4",
     },
 
     {
       icon: "fi fi-rr-venus-mars",
       title: "gender",
       content: user?.gender,
-      color: "",
+      bgColor: "#d63031",
+      titleColor: "#f6e58d",
+      contentColor: "#f1f9ff",
     },
     {
       icon: "fi fi-rr-phone-flip",
       title: "phone number",
       content: user?.phone,
-      color: "",
+      bgColor: "#1A397C",
+      titleColor: "#4F8CC9",
+      contentColor: "#A8C8E3",
     },
   ];
+
+  const handleDeleteAccount = () => {
+    store.remove("currentUser");
+    setloading(false);
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+  };
+
+  const handleLogout = () => {
+    setloading(false);
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+  };
 
   return (
     <main className="min-h-svh">
       {loading ? (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col min-h-svh justify-between gap-4">
           <div className="min-h-[300px] relative">
             <img
               src={user?.gender === "male" ? "/cover-1.jpg" : "/avatar-1.jpg"}
@@ -84,7 +109,7 @@ const Page = () => {
                   className="h-[100%] w-[100%] p-2 object-cover rounded-full"
                 />
               </div>
-              <div className="flex flex-col justify-center bg-[#ffffffa5] px-4 py-2 rounded-[24px_10px] shadow-md text-center  min-w-[150px] font-[dynapuff]">
+              <div className="flex flex-col justify-center bg-[white] px-4 py-2 rounded-[24px_10px] shadow-md text-center  min-w-[150px] font-[dynapuff]">
                 <h1 className="capitalize tracking-wider font-bold text-2xl text-[var(--blue)] ">
                   {user?.name}
                 </h1>
@@ -94,31 +119,67 @@ const Page = () => {
           </div>
 
           <div className="p-8 flex flex-wrap gap-8 justify-center items-center">
-            {profileData.map((e, i) => {
-              return (
-                <div
-                  key={i}
-                  className=" flex flex-col justify-start items-baseline gap-4 bg-[#ffcc00] px-8 py-5 rounded-xl shadow-md h-[150px] min-w-[150px] relative overflow-hidden"
-                  style={{
-                    borderRadius: "20% 80% 17% 83% / 78% 11% 89% 22%",
-                  }}
-                >
-                  {" "}
-                  <i
-                    className={`${e.icon}
-              absolute bottom-0 right-[10px] opacity-15 text-5xl 
-              -rotate-5
+            {profileData
+              .filter((e) => e.content)
+              .map((e, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={` flex flex-col justify-start items-baseline gap-4 px-8 py-5 rounded-xl shadow-md h-[150px] min-w-[150px] relative `}
+                    style={{
+                      borderRadius: "20% 80% 17% 83% / 78% 11% 89% 22%",
+                      backgroundColor: e.bgColor,
+                    }}
+                  >
+                    {" "}
+                    <i
+                      className={`${e.icon}
+              absolute bottom-0 right-0 text-3xl 
+              -rotate-5 bg-amber-50 rounded-full h-[50px] w-[50px] flex items-center justify-center
               `}
-                  ></i>
-                  <div className="capitalize tracking-wider font-bold text-xs text-[#262222] drop-shadow-2xl flex items-center justify-between w-full gap-2 opacity-50 text-wrap">
-                    {e.title}
+                      style={{
+                        color: e.bgColor,
+                      }}
+                    ></i>
+                    <div
+                      className={`capitalize tracking-wider font-bold text-xs drop-shadow-2xl flex items-center justify-between w-full gap-2 text-wrap opac`}
+                      style={{
+                        color: e.titleColor,
+                      }}
+                    >
+                      {e.title}
+                    </div>
+                    <div
+                      className={`font-[dynapuff] text-3xl font-bold gap-2 flex opac`}
+                      style={{
+                        color: e.contentColor,
+                      }}
+                    >
+                      {e.content}
+                    </div>
                   </div>
-                  <div className="opacity-80 text-[var(--blue)] font-[dynapuff] text-2xl gap-2 flex ">
-                    {e.content}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
+          <div className="flex md:gap-8 justify-around sm:justify-center items-center p-5 font-semibold font-[dynapuff] bg-[white] border-t-2 border-[gainsboro]">
+            <button
+              type="button"
+              className="cursor-pointer text-[var(--purple)] px-6 py-2 rounded-lg opacity-50 hover:opacity-100 hover:text-[#d63031] transition text-nowrap"
+              onClick={() => {
+                handleDeleteAccount();
+              }}
+            >
+              Delete Account
+            </button>
+            <button
+              type="button"
+              className="cursor-pointer bg-[var(--purple)] text-white px-6 py-2 rounded-lg hover:bg-[#d63031] transition text-nowrap "
+              onClick={() => {
+                handleLogout();
+              }}
+            >
+              Log out
+            </button>
           </div>
         </div>
       ) : (

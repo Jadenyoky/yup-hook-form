@@ -5,7 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { stepSchemas } from "./schemas";
 import { Step1, Step2, Step3 } from "./steps";
 import store from "store2";
-import _, { head } from "lodash";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 
 const MultiStepForms = () => {
@@ -73,18 +73,19 @@ const MultiStepForms = () => {
         <main className="min-h-screen flex items-center justify-center">
           <div
             className="bg-white rounded-xl shadow-lg flex 
-      overflow-hidden p-3 w-[90%] lg:w-[70%] gap-8"
+      overflow-hidden p-3 w-full h-svh md:h-[auto] md:w-[90%] lg:w-[70%] gap-8 flex-col md:flex-row"
           >
             <div
-              className={`w-[270px] rounded-2xl h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover 
-            flex flex-col gap-8 text-white
+              className={`md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
+            flex md:flex-col md:gap-8 text-white gap-4
+            md:justify-start justify-around
             `}
             >
               {stepsInfo.map((step, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center self-baseline gap-4"
+                    className="flex items-center self-baseline gap-2 flex-wrap"
                   >
                     <p
                       className={` h-[35px] w-[35px] flex justify-center items-center rounded-full  ${
@@ -95,11 +96,11 @@ const MultiStepForms = () => {
                     >
                       {index + 1}
                     </p>
-                    <div className="flex flex-col">
+                    <div className="sm:flex flex-col hidden">
                       <h2 className="opacity-60 text-[13px]">
                         Step {step.step}
                       </h2>
-                      <h2 className="font-semibold">{step.title}</h2>
+                      <h2 className="font-semibold ">{step.title}</h2>
                     </div>
                   </div>
                 );
@@ -116,13 +117,17 @@ const MultiStepForms = () => {
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-2 h-[350px] overflow-y-auto">
+                <div
+                  className="flex flex-col gap-2 md:h-[350px] overflow-y-auto 
+                flex-1
+                "
+                >
                   <FormProvider {...methods}>
                     {stepsInfo[currentStep]?.component}
                   </FormProvider>
                 </div>
 
-                <div className="font-semibold flex justify-between ">
+                <div className="font-semibold flex justify-between gap-4 w-full">
                   {currentStep > 0 ? (
                     <button
                       type="button"
@@ -148,7 +153,7 @@ const MultiStepForms = () => {
                   {currentStep < stepsInfo.length - 1 ? (
                     <button
                       type="button"
-                      className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition  "
+                      className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
                       onClick={() => {
                         next();
                       }}
@@ -158,7 +163,7 @@ const MultiStepForms = () => {
                   ) : (
                     <button
                       type="submit"
-                      className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition  "
+                      className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
                       onClick={() => {
                         console.log("done");
                       }}
