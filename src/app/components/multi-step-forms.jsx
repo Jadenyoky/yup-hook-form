@@ -143,7 +143,7 @@ const MultiStepForms = () => {
                 ) : (
                   <button
                     type="button"
-                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
+                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition text-sm md:text-base`}
                     onClick={() => {
                       router.push("/sign-in");
                     }}
