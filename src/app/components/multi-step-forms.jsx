@@ -73,7 +73,7 @@ const MultiStepForms = () => {
         <main className="min-h-svh flex items-center justify-center">
           <div
             className="bg-white rounded-xl shadow-lg flex 
-       p-3 h-svh md:h-[auto] md:w-[90%] lg:w-[70%] gap-8 flex-col md:flex-row"
+       p-3 h-svh w-full md:h-[auto] md:w-[90%] lg:w-[70%] gap-8 flex-col md:flex-row"
           >
             <div
               className={`md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
@@ -106,75 +106,75 @@ const MultiStepForms = () => {
                 );
               })}
             </div>
-            <div className="grid  flex-1">
-              <div className="p-8 flex flex-col gap-8 justify-between ">
-                <div className="flex flex-col gap-2">
-                  <h1 className="font-bold text-2xl text-[var(--blue-dark)] ">
-                    {stepsInfo[currentStep]?.heading}
-                  </h1>
-                  <p className="opacity-40">
-                    {stepsInfo[currentStep]?.description}
-                  </p>
-                </div>
+            {/* <div className="flex flex-col flex-1"> */}
+            <div className="p-8 flex flex-col gap-8 justify-between flex-1 ">
+              <div className="flex flex-col gap-2">
+                <h1 className="font-bold text-2xl text-[var(--blue-dark)] ">
+                  {stepsInfo[currentStep]?.heading}
+                </h1>
+                <p className="opacity-40">
+                  {stepsInfo[currentStep]?.description}
+                </p>
+              </div>
 
-                <div
-                  className="flex flex-col gap-2 md:h-[350px] overflow-y-auto 
+              <div
+                className="flex flex-col gap-2 md:h-[350px] overflow-y-auto 
                 flex-1
                 "
-                >
-                  <FormProvider {...methods}>
-                    {stepsInfo[currentStep]?.component}
-                  </FormProvider>
-                </div>
+              >
+                <FormProvider {...methods}>
+                  {stepsInfo[currentStep]?.component}
+                </FormProvider>
+              </div>
 
-                <div className="font-semibold flex justify-between gap-4 w-full">
-                  {currentStep > 0 ? (
-                    <button
-                      type="button"
-                      className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
-                      onClick={() => {
-                        currentStep > 0 && setcurrentStep((prev) => prev - 1);
-                      }}
-                    >
-                      Go back
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
-                      onClick={() => {
-                        router.push("/sign-in");
-                      }}
-                    >
-                      Having an account ?
-                    </button>
-                  )}
+              <div className="font-semibold flex justify-between gap-4 w-full">
+                {currentStep > 0 ? (
+                  <button
+                    type="button"
+                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
+                    onClick={() => {
+                      currentStep > 0 && setcurrentStep((prev) => prev - 1);
+                    }}
+                  >
+                    Go back
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
+                    onClick={() => {
+                      router.push("/sign-in");
+                    }}
+                  >
+                    Having an account ?
+                  </button>
+                )}
 
-                  {currentStep < stepsInfo.length - 1 ? (
-                    <button
-                      type="button"
-                      className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
-                      onClick={() => {
-                        next();
-                      }}
-                    >
-                      Next Step
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
-                      onClick={() => {
-                        console.log("done");
-                      }}
-                    >
-                      Complete
-                    </button>
-                  )}
-                </div>
+                {currentStep < stepsInfo.length - 1 ? (
+                  <button
+                    type="button"
+                    className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
+                    onClick={() => {
+                      next();
+                    }}
+                  >
+                    Next Step
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
+                    onClick={() => {
+                      console.log("done");
+                    }}
+                  >
+                    Complete
+                  </button>
+                )}
               </div>
             </div>
           </div>
+          {/* </div> */}
         </main>
       </form>
     </FormProvider>
