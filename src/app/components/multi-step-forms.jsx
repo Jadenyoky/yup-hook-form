@@ -70,10 +70,10 @@ const MultiStepForms = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(complete)}>
-        <main className="min-h-screen flex items-center justify-center">
+        <main className="min-h-svh flex items-center justify-center">
           <div
             className="bg-white rounded-xl shadow-lg flex 
-      overflow-hidden p-3 w-full h-svh md:h-[auto] md:w-[90%] lg:w-[70%] gap-8 flex-col md:flex-row"
+       p-3 h-svh md:h-[auto] md:w-[90%] lg:w-[70%] gap-8 flex-col md:flex-row"
           >
             <div
               className={`md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
