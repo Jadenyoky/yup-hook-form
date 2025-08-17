@@ -73,7 +73,9 @@ const MultiStepForms = () => {
         <main className="min-h-svh flex items-center justify-center">
           <div
             className="bg-white rounded-xl shadow-lg flex 
-       p-3 h-svh w-full md:h-[auto] md:w-[90%] lg:w-[70%] gap-8 flex-col md:flex-row"
+       p-3 w-full md:min-h-auto md:w-[90%] lg:w-[70%] md:gap-8 flex-col md:flex-row 
+       min-h-svh
+       "
           >
             <div
               className={`md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
@@ -107,7 +109,7 @@ const MultiStepForms = () => {
               })}
             </div>
             {/* <div className="flex flex-col flex-1"> */}
-            <div className="p-8 flex flex-col gap-8 justify-between flex-1 ">
+            <div className="p-8 flex flex-col gap-8 justify-between flex-grow">
               <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-2xl text-[var(--blue-dark)] ">
                   {stepsInfo[currentStep]?.heading}
