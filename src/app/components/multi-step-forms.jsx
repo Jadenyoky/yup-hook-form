@@ -41,9 +41,23 @@ const MultiStepForms = () => {
     },
   ];
 
+  const back = () => {
+    setcurrentStep((prev) => {
+      const newStep = prev - 1;
+      animatedActive(newStep);
+      return newStep;
+    });
+  };
+
   const next = async () => {
     const isValid = await methods.trigger();
-    isValid && setcurrentStep((prev) => prev + 1);
+    if (isValid) {
+      setcurrentStep((prev) => {
+        const newStep = prev + 1;
+        animatedActive(newStep);
+        return newStep;
+      });
+    }
   };
 
   const complete = (data) => {
@@ -69,28 +83,63 @@ const MultiStepForms = () => {
 
   const animated = () => {
     const tl = gsap.timeline();
-    tl.fromTo(
-      ".stepsSection",
+    tl.to(".stepSection", {
+      scale: 1,
+      transition: "clip-path 0.5s ",
+      clipPath: "circle(71.0% at 50% 50%)",
+      ease: "bounce",
+    })
+      .to(".stepInfo", {
+        delay: 0.4,
+        opacity: 1,
+        y: 0,
+        stagger: 0.2,
+        ease: "sine.inOut",
+      })
+      .to(".stepTitle", {
+        opacity: 1,
+        stagger: 0.2,
+        x: 0,
+        ease: "sine.inOut",
+      })
+      .to(".button0", {
+        scale: 1,
+        ease: "sine.inOut",
+        stagger: 0.5,
+      });
+  };
+
+  const animatedActive = (newStep) => {
+    gsap.fromTo(
+      `.stepInfo${newStep + 1}`,
       {
         scale: 0.5,
-        transition: "clip-path 0.5s ",
-        clipPath: "circle(11.7% at 50% 50%)",
-        ease: "bounce",
+        transition: "all 0.5s ",
       },
       {
         scale: 1,
-        transition: "clip-path 0.5s ",
-        // clipPath: "circle(31.0% at 65% 40%)",
-        clipPath: "circle(71.0% at 50% 50%)",
-        ease: "bounce",
+        ease: "sine.inOut",
+      }
+    );
+
+    gsap.fromTo(
+      ".stepTitle",
+      {
+        opacity: 0,
+        x: -20,
+      },
+      {
+        opacity: 1,
+        stagger: 0.2,
+        x: 0,
+        ease: "sine.inOut",
       }
     );
   };
 
   useEffect(() => {
     animated();
-    console.log("changed", currentStep);
-  }, [currentStep]);
+  }, []);
 
   return (
     <FormProvider {...methods}>
@@ -103,16 +152,24 @@ const MultiStepForms = () => {
        "
           >
             <div
-              className={`stepsSection md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
+              className={`stepSection md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
             flex md:flex-col md:gap-8 text-white gap-4
             md:justify-start justify-around
             `}
+              style={{
+                scale: 0.5,
+                transition: "clip-path 0.5s ",
+                clipPath: "circle(11.7% at 50% 50%)",
+                ease: "bounce",
+              }}
             >
               {stepsInfo.map((step, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center self-baseline gap-2 flex-wrap"
+                    className={`stepInfo stepInfo${
+                      index + 1
+                    } translate-y-4 opacity-0 flex items-center self-baseline gap-2 flex-wrap`}
                   >
                     <p
                       className={` h-[35px] w-[35px] flex justify-center items-center rounded-full  ${
@@ -134,8 +191,8 @@ const MultiStepForms = () => {
               })}
             </div>
             {/* <div className="flex flex-col flex-1"> */}
-            <div className="p-8 flex flex-col gap-8 justify-between flex-grow">
-              <div className="flex flex-col gap-2">
+            <div className="inputSection p-8 flex flex-col gap-8 justify-between flex-grow">
+              <div className="stepTitle -translate-x-4 opacity-0 flex flex-col gap-2">
                 <h1 className="font-bold text-2xl text-[var(--blue-dark)] ">
                   {stepsInfo[currentStep]?.heading}
                 </h1>
@@ -145,7 +202,7 @@ const MultiStepForms = () => {
               </div>
 
               <div
-                className="flex flex-col gap-2 md:h-[350px] overflow-y-auto 
+                className="stepTitle -translate-x-4 opacity-0 flex flex-col gap-2 md:h-[350px] overflow-y-auto 
                 flex-1
                 "
               >
@@ -158,9 +215,9 @@ const MultiStepForms = () => {
                 {currentStep > 0 ? (
                   <button
                     type="button"
-                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
+                    className={`button0 scale-y-0 text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition`}
                     onClick={() => {
-                      currentStep > 0 && setcurrentStep((prev) => prev - 1);
+                      back();
                     }}
                   >
                     Go back
@@ -168,7 +225,7 @@ const MultiStepForms = () => {
                 ) : (
                   <button
                     type="button"
-                    className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition text-sm md:text-base`}
+                    className={`button0 scale-y-0 text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition text-sm md:text-base`}
                     onClick={() => {
                       router.push("/sign-in");
                     }}
@@ -180,7 +237,7 @@ const MultiStepForms = () => {
                 {currentStep < stepsInfo.length - 1 ? (
                   <button
                     type="button"
-                    className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
+                    className="button0 scale-y-0 cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
                     onClick={() => {
                       next();
                     }}
@@ -190,7 +247,7 @@ const MultiStepForms = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
+                    className="button0 scale-y-0 cursor-pointer bg-[var(--blue-dark)] text-white px-6 py-2 rounded-lg hover:bg-[var(--purple)] transition text-nowrap"
                     onClick={() => {
                       console.log("done");
                     }}
