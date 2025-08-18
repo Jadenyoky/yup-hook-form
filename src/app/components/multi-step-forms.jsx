@@ -160,7 +160,6 @@ const MultiStepForms = () => {
                 scale: 0.5,
                 transition: "clip-path 0.5s ",
                 clipPath: "circle(11.7% at 50% 50%)",
-                ease: "bounce",
               }}
             >
               {stepsInfo.map((step, index) => {
