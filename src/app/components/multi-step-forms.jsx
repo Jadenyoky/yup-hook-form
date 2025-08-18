@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
 import { stepSchemas } from "./schemas";
@@ -7,7 +7,7 @@ import { Step1, Step2, Step3 } from "./steps";
 import store from "store2";
 import _ from "lodash";
 import { useRouter } from "next/navigation";
-
+import gsap from "gsap";
 const MultiStepForms = () => {
   const router = useRouter();
   const [currentStep, setcurrentStep] = useState(0);
@@ -67,18 +67,43 @@ const MultiStepForms = () => {
     router.push("/profile");
   };
 
+  const animated = () => {
+    const tl = gsap.timeline();
+    tl.fromTo(
+      ".stepsSection",
+      {
+        scale: 0.5,
+        transition: "clip-path 0.5s ",
+        clipPath: "circle(11.7% at 50% 50%)",
+        ease: "bounce",
+      },
+      {
+        scale: 1,
+        transition: "clip-path 0.5s ",
+        // clipPath: "circle(31.0% at 65% 40%)",
+        clipPath: "circle(71.0% at 50% 50%)",
+        ease: "bounce",
+      }
+    );
+  };
+
+  useEffect(() => {
+    animated();
+    console.log("changed", currentStep);
+  }, [currentStep]);
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(complete)}>
         <main className="min-h-svh flex items-center justify-center">
           <div
-            className="bg-white rounded-xl shadow-lg flex 
+            className="contStep bg-white rounded-xl shadow-lg flex 
        p-3 w-full md:min-h-auto md:w-[90%] lg:w-[70%] md:gap-8 flex-col md:flex-row 
        min-h-svh
        "
           >
             <div
-              className={`md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
+              className={`stepsSection md:w-[270px] rounded-2xl md:h-[600px] p-8 bg-[url(/bg-sidebar-desktop.svg)] bg-cover bg-[50%_75%] md:bg-top
             flex md:flex-col md:gap-8 text-white gap-4
             md:justify-start justify-around
             `}

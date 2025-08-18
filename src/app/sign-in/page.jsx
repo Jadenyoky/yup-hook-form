@@ -1,11 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { stepSchemas } from "../components/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import store from "store2";
 import _ from "lodash";
+import gsab from "gsap";
 
 const Page = () => {
   const router = useRouter();
@@ -51,31 +52,87 @@ const Page = () => {
     router.push("/profile");
   };
 
+  const all = useRef(null);
+  const heroPic = useRef(null);
+  const container = useRef(null);
+  const title = useRef(null);
+  const input = useRef(null);
+  const button = useRef(null);
+
+  const animated = () => {
+    const tl = gsab.timeline();
+    tl.to(heroPic.current, {
+      x: 0,
+      duration: 0.5,
+      ease: "sine.in",
+      opacity: 1,
+    })
+      .to(container.current, {
+        scale: 1,
+        // duration: 1.5,
+        ease: "back.inOut",
+        opacity: 1,
+      })
+      .to(title.current, {
+        y: 0,
+        // duration: 1,
+        ease: "back.inOut",
+        opacity: 1,
+      })
+      .to(input.current, {
+        scale: 1,
+        // duration: 1.5,
+        ease: "back.inOut",
+        opacity: 1,
+      })
+      .to(button.current, {
+        y: 0,
+        // duration: 1,
+        ease: "back.inOut",
+        opacity: 1,
+      })
+      .to(all.current, {
+        overflow: "auto",
+      });
+  };
+
+  useEffect(() => {
+    animated();
+  }, []);
+
   return (
     <form onSubmit={handleSubmit(complete)}>
-      <main className="h-svh">
+      <main className="h-svh overflow-hidden" ref={all}>
         <div className="min-h-full grid grid-cols-1 md:grid-cols-2 justify-items-center md:items-center md:place-content-center md:gap-16">
           <img
             src="/sign-in-hero.svg"
-            className="drop-shadow-lg aspect-video md:h-[600px]"
+            className="drop-shadow-lg aspect-video md:h-[600px] opacity-0 -translate-x-50"
+            ref={heroPic}
           />
 
           <div
             className="p-8 flex flex-col gap-8 justify-between w-full bg-white 
         rounded-[24px_24px_0px_0px]
         md:rounded-3xl shadow-lg md:mr-8 
-        md:max-w-[500px]
+        md:max-w-[500px] opacity-0 scale-50
         "
+            ref={container}
           >
-            <div className="flex flex-col gap-2">
+            <div
+              className="flex flex-col gap-2 opacity-0 -translate-y-10"
+              ref={title}
+            >
               <h1 className="font-bold text-2xl text-[var(--blue-dark)] ">
                 Sign in
               </h1>
               <p className="opacity-40">Type your username and password</p>
             </div>
 
-            <div className="flex flex-col gap-16">
-              <div className="flex flex-col gap-8 max-h-[400px] overflow-y-auto">
+            <div className="flex flex-col gap-16 ">
+              <div
+                className="flex flex-col gap-8 max-h-[400px] overflow-y-auto opacity-0 scale-50"
+                ref={input}
+              >
                 {inputs.map((item, index) => {
                   return (
                     <div key={index} className="flex flex-col gap-2">
@@ -105,7 +162,10 @@ const Page = () => {
                 })}
               </div>
 
-              <div className="font-semibold flex justify-between items-center gap-8 ">
+              <div
+                className="font-semibold flex justify-between items-center gap-8 opacity-0 translate-y-10"
+                ref={button}
+              >
                 <button
                   type="button"
                   className={`text-[var(--purple)] opacity-50 rounded-md cursor-pointer hover:opacity-100 transition text-sm md:text-base`}
